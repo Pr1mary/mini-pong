@@ -20,10 +20,12 @@ namespace mini_pong
         
         Texture2D ball;
         Vector2 ballPos;
-        bool ballUpPos;
+        float ballYMultiplier;
+        bool ballUp;
+        bool ballRight;
 
         float playerSpeed;
-        Vector2 ballSpeed;
+        float ballSpeed;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -44,15 +46,16 @@ namespace mini_pong
         {
             // TODO: Add your initialization logic here
             //player pos
-            playerPos1 = new Vector2(graphics.PreferredBackBufferWidth / 8, graphics.PreferredBackBufferHeight / 2);
-            playerPos2 = new Vector2(7*(graphics.PreferredBackBufferWidth / 8), graphics.PreferredBackBufferHeight / 2);
+            playerPos1 = GameMaster.ObjPos("Player1", graphics);
+            playerPos2 = GameMaster.ObjPos("Player2", graphics);
             //player speed
             playerSpeed = 500f;
             //ball pos
-            ballPos = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
-            ballUpPos = true;
+            ballPos = GameMaster.ObjPos("Ball", graphics);
+            ballUp = true;
+            ballRight = true;
             //ball speed
-            ballSpeed = new Vector2(500f, 500f);
+            ballSpeed = 500f;
 
             base.Initialize();
         }
@@ -114,15 +117,19 @@ namespace mini_pong
                 playerPos2.Y = player2.Height / 2;
 
             //ball logic
-            ballPos.X += ballSpeed.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if(ballUpPos == true)
-                ballPos.Y -= 5f * ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            ballYMultiplier = 2f;
+            ballPos.X += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            if (ballUp == true)
+                ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             else
-                ballPos.Y += 5f * ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                ballPos.Y += ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUpPos = true;
-            if (ballPos.Y < ball.Height / 2) ballUpPos = false;
+            if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = true;
+            if (ballPos.Y < ball.Height / 2) ballUp = false;
+
+            if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2) ballPos = GameMaster.ObjPos("Ball", graphics);
+            if (ballPos.X < ball.Width / 2) GameMaster.ObjPos("Ball", graphics);
 
             base.Update(gameTime);
         }
