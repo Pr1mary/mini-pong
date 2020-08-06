@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace mini_pong
 {
@@ -10,7 +9,6 @@ namespace mini_pong
     /// </summary>
     public class Game1 : Game
     {
-        Random rand;
 
         Texture2D player1;
         Vector2 playerPos1;
@@ -52,8 +50,8 @@ namespace mini_pong
             playerSpeed = 500f;
             //ball pos
             ballPos = GameMaster.ObjPos("Ball", graphics);
-            ballUp = true;
-            ballRight = true;
+            ballUp = GameMaster.RandBool();
+            ballRight = GameMaster.RandBool();
             //ball speed
             ballSpeed = 500f;
 
@@ -136,8 +134,18 @@ namespace mini_pong
             if (ballPos.Y < ball.Height / 2) ballUp = false;
 
             //ball reset logic
-            if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2) ballPos = GameMaster.ObjPos("Ball", graphics);
-            if (ballPos.X < ball.Width / 2) ballPos = GameMaster.ObjPos("Ball", graphics);
+            if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2)
+            {
+                ballPos = GameMaster.ObjPos("Ball", graphics);
+                ballUp = GameMaster.RandBool();
+                ballRight = GameMaster.RandBool();
+            }
+            if (ballPos.X < ball.Width / 2)
+            {
+                ballPos = GameMaster.ObjPos("Ball", graphics);
+                ballUp = GameMaster.RandBool();
+                ballRight = GameMaster.RandBool();
+            }
 
             base.Update(gameTime);
         }
