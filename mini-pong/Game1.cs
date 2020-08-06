@@ -9,13 +9,21 @@ namespace mini_pong
     /// </summary>
     public class Game1 : Game
     {
+
         Texture2D player1;
         Vector2 playerPos1;
 
         Texture2D player2;
         Vector2 playerPos2;
+        
+        Texture2D ball;
+        Vector2 ballPos;
+        float ballYMultiplier;
+        bool ballUp;
+        bool ballRight;
 
         float playerSpeed;
+        float ballSpeed;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -35,9 +43,17 @@ namespace mini_pong
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            playerPos1 = new Vector2(graphics.PreferredBackBufferWidth / 8, graphics.PreferredBackBufferHeight / 2);
-            playerPos2 = new Vector2(7*(graphics.PreferredBackBufferWidth / 8), graphics.PreferredBackBufferHeight / 2);
+            //player pos
+            playerPos1 = GameMaster.ObjPos("Player1", graphics);
+            playerPos2 = GameMaster.ObjPos("Player2", graphics);
+            //player speed
             playerSpeed = 500f;
+            //ball pos
+            ballPos = GameMaster.ObjPos("Ball", graphics);
+            ballUp = GameMaster.RandBool();
+            ballRight = GameMaster.RandBool();
+            //ball speed
+            ballSpeed = 500f;
 
             base.Initialize();
         }
@@ -54,6 +70,7 @@ namespace mini_pong
             // TODO: use this.Content to load your game content here
             player1 = Content.Load<Texture2D>("player");
             player2 = Content.Load<Texture2D>("player");
+            ball = Content.Load<Texture2D>("ball");
         }
 
         /// <summary>
@@ -97,6 +114,43 @@ namespace mini_pong
             if (playerPos2.Y < player2.Height / 2)
                 playerPos2.Y = player2.Height / 2;
 
+            //ball logic
+            ballYMultiplier = 2f;
+
+            //ball y movement
+            if (ballUp == true)
+                ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            else
+                ballPos.Y += ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //ball x movement
+            if (ballRight == true)
+                ballPos.X += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            else
+                ballPos.X -= ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //ball y boundaries
+            if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = true;
+            if (ballPos.Y < ball.Height / 2) ballUp = false;
+
+            //ball to player 1 collision
+            if ((ballPos.X < playerPos1.X) && (ballPos.Y == playerPos1.Y))
+                ballRight = true;
+
+            //ball reset logic
+            if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2)
+            {
+                ballPos = GameMaster.ObjPos("Ball", graphics);
+                ballUp = GameMaster.RandBool();
+                ballRight = GameMaster.RandBool();
+            }
+            if (ballPos.X < ball.Width / 2)
+            {
+                ballPos = GameMaster.ObjPos("Ball", graphics);
+                ballUp = GameMaster.RandBool();
+                ballRight = GameMaster.RandBool();
+            }
+
             base.Update(gameTime);
         }
 
@@ -110,8 +164,9 @@ namespace mini_pong
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(player1, playerPos1, null, Color.White, 0f, new Vector2(player1.Width/2, player1.Height/2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(player1, playerPos1, null, Color.White, 0f, new Vector2(player1.Width / 2, player1.Height / 2), 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(player2, playerPos2, null, Color.White, 0f, new Vector2(player2.Width / 2, player2.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(ball, ballPos, null, Color.White, 0f, new Vector2(ball.Width / 2, ball.Height / 2), 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
