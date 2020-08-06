@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/ROG/OneDrive/.PERSONAL PROJECT/mini-pong/mini-pong/Content/pong character.png</SourceFile>
-  <SourceTime>2020-08-06T03:00:44.6340062+07:00</SourceTime>
-  <DestFile>C:/Users/ROG/OneDrive/.PERSONAL PROJECT/mini-pong/mini-pong/Content/bin/Windows/Content/pong player.xnb</DestFile>
-  <DestTime>2020-08-06T13:18:51.791491+07:00</DestTime>
+  <SourceFile>C:/Users/ROG/OneDrive/.PERSONAL PROJECT/mini-pong/mini-pong/Content/pong ball.png</SourceFile>
+  <SourceTime>2020-08-06T13:31:25.6141227+07:00</SourceTime>
+  <DestFile>C:/Users/ROG/OneDrive/.PERSONAL PROJECT/mini-pong/mini-pong/Content/bin/Windows/Content/ball.xnb</DestFile>
+  <DestTime>2020-08-06T13:35:04.377379+07:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T23:35:54+07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

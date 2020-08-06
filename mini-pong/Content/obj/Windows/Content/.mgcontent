@@ -4,9 +4,11 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/ROG/OneDrive/.PERSONAL PROJECT/mini-pong/mini-pong/Content/pong ball.png</File>
     <File>C:/Users/ROG/OneDrive/.PERSONAL PROJECT/mini-pong/mini-pong/Content/pong character.png</File>
   </SourceFiles>
   <DestFiles>
-    <File>pong player.png</File>
+    <File>ball.png</File>
+    <File>player.png</File>
   </DestFiles>
 </SourceFileCollection>

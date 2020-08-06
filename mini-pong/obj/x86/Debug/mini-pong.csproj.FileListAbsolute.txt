@@ -22,3 +22,6 @@ C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\obj\x86\Debug\mini-p
 C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\obj\x86\Debug\mini-pong.exe
 C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\obj\x86\Debug\mini-pong.pdb
 C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debug\Content\pong player.xnb
+C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debug\Content\pong character.xnb
+C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debug\Content\player.xnb
+C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debug\Content\ball.xnb
