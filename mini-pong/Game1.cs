@@ -116,7 +116,7 @@ namespace mini_pong
 
             //ball logic
             ballYMultiplier = 2f;
-            
+
             //ball y movement
             if (ballUp == true)
                 ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -132,6 +132,10 @@ namespace mini_pong
             //ball y boundaries
             if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = true;
             if (ballPos.Y < ball.Height / 2) ballUp = false;
+
+            //ball to player 1 collision
+            if ((ballPos.X < playerPos1.X) && (ballPos.Y == playerPos1.Y))
+                ballRight = true;
 
             //ball reset logic
             if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2)
