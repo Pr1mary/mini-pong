@@ -14,8 +14,12 @@ namespace mini_pong
 
         Texture2D player2;
         Vector2 playerPos2;
+        
+        Texture2D ball;
+        Vector2 ballPos;
 
         float playerSpeed;
+        Vector2 ballSpeed;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -35,9 +39,15 @@ namespace mini_pong
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //player pos
             playerPos1 = new Vector2(graphics.PreferredBackBufferWidth / 8, graphics.PreferredBackBufferHeight / 2);
             playerPos2 = new Vector2(7*(graphics.PreferredBackBufferWidth / 8), graphics.PreferredBackBufferHeight / 2);
+            //player speed
             playerSpeed = 500f;
+            //ball pos
+            ballPos = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+            //ball speed
+            ballSpeed = new Vector2(500f, 500f);
 
             base.Initialize();
         }
@@ -54,6 +64,7 @@ namespace mini_pong
             // TODO: use this.Content to load your game content here
             player1 = Content.Load<Texture2D>("player");
             player2 = Content.Load<Texture2D>("player");
+            ball = Content.Load<Texture2D>("ball");
         }
 
         /// <summary>
@@ -97,6 +108,19 @@ namespace mini_pong
             if (playerPos2.Y < player2.Height / 2)
                 playerPos2.Y = player2.Height / 2;
 
+            //ball logic
+            bool ballUp = false;
+
+            ballPos.X += ballSpeed.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if(ballUp == true)
+                ballPos.Y -= ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            else
+                ballPos.Y += ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = false;
+            if (ballPos.Y < ball.Height / 2) ballUp = true;
+
             base.Update(gameTime);
         }
 
@@ -110,8 +134,9 @@ namespace mini_pong
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(player1, playerPos1, null, Color.White, 0f, new Vector2(player1.Width/2, player1.Height/2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(player1, playerPos1, null, Color.White, 0f, new Vector2(player1.Width / 2, player1.Height / 2), 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(player2, playerPos2, null, Color.White, 0f, new Vector2(player2.Width / 2, player2.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(ball, ballPos, null, Color.White, 0f, new Vector2(ball.Width / 2, ball.Height / 2), 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
