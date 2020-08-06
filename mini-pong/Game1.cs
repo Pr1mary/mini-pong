@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace mini_pong
 {
@@ -9,6 +10,8 @@ namespace mini_pong
     /// </summary>
     public class Game1 : Game
     {
+        Random rand;
+
         Texture2D player1;
         Vector2 playerPos1;
 
@@ -17,6 +20,7 @@ namespace mini_pong
         
         Texture2D ball;
         Vector2 ballPos;
+        bool ballUpPos;
 
         float playerSpeed;
         Vector2 ballSpeed;
@@ -46,6 +50,7 @@ namespace mini_pong
             playerSpeed = 500f;
             //ball pos
             ballPos = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+            ballUpPos = true;
             //ball speed
             ballSpeed = new Vector2(500f, 500f);
 
@@ -109,17 +114,15 @@ namespace mini_pong
                 playerPos2.Y = player2.Height / 2;
 
             //ball logic
-            bool ballUp = false;
-
             ballPos.X += ballSpeed.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if(ballUp == true)
-                ballPos.Y -= ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if(ballUpPos == true)
+                ballPos.Y -= 5f * ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
             else
-                ballPos.Y += ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                ballPos.Y += 5f * ballSpeed.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = false;
-            if (ballPos.Y < ball.Height / 2) ballUp = true;
+            if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUpPos = true;
+            if (ballPos.Y < ball.Height / 2) ballUpPos = false;
 
             base.Update(gameTime);
         }
