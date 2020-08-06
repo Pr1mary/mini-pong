@@ -118,18 +118,26 @@ namespace mini_pong
 
             //ball logic
             ballYMultiplier = 2f;
-            ballPos.X += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             
+            //ball y movement
             if (ballUp == true)
                 ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             else
                 ballPos.Y += ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            //ball x movement
+            if (ballRight == true)
+                ballPos.X += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            else
+                ballPos.X -= ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //ball y boundaries
             if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = true;
             if (ballPos.Y < ball.Height / 2) ballUp = false;
 
+            //ball reset logic
             if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2) ballPos = GameMaster.ObjPos("Ball", graphics);
-            if (ballPos.X < ball.Width / 2) GameMaster.ObjPos("Ball", graphics);
+            if (ballPos.X < ball.Width / 2) ballPos = GameMaster.ObjPos("Ball", graphics);
 
             base.Update(gameTime);
         }
