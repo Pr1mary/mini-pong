@@ -12,12 +12,15 @@ namespace mini_pong
 
         Texture2D player1;
         Vector2 playerPos1;
+        Rectangle playerRect1;
 
         Texture2D player2;
         Vector2 playerPos2;
-        
+        Rectangle playerRect2;
+
         Texture2D ball;
         Vector2 ballPos;
+        Rectangle ballRect;
         float ballYMultiplier;
         bool ballUp;
         bool ballRight;
@@ -54,6 +57,10 @@ namespace mini_pong
             ballRight = GameMaster.RandBool();
             //ball speed
             ballSpeed = 500f;
+            //set rectangle for collision
+            playerRect1 = new Rectangle();
+            playerRect2 = new Rectangle();
+            ballRect = new Rectangle();
 
             base.Initialize();
         }
@@ -68,9 +75,18 @@ namespace mini_pong
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            //load content
             player1 = Content.Load<Texture2D>("player");
             player2 = Content.Load<Texture2D>("player");
             ball = Content.Load<Texture2D>("ball");
+
+            //assign rect size for collision
+            playerRect1 = new Rectangle((int)playerPos1.X, (int)playerPos1.Y, player1.Width, player1.Height);
+            playerRect1.Offset(playerRect1.Width / 2, playerRect1.Height / 2);
+            playerRect2 = new Rectangle((int)playerPos2.X, (int)playerPos2.Y, player2.Width, player2.Height);
+            playerRect2.Offset(playerRect2.Width / 2, playerRect2.Height / 2);
+            ballRect = new Rectangle((int)ballPos.X, (int)ballPos.Y, ball.Width, ball.Height);
+            ballRect.Offset(ballRect.Width / 2, ballRect.Height / 2);
         }
 
         /// <summary>
@@ -93,6 +109,14 @@ namespace mini_pong
                 Exit();
 
             // TODO: Add your update logic here
+            //sync rect pos with obj pos
+            //p1
+            playerRect1.Location = playerPos1.ToPoint();
+            //p2
+            playerRect2.Location = playerPos2.ToPoint();
+            //ball
+            ballRect.Location = ballPos.ToPoint();
+
             //player control
             var kstate = Keyboard.GetState();
             //player 1 control
@@ -101,7 +125,7 @@ namespace mini_pong
             //player 2 control
             if (kstate.IsKeyDown(Keys.Up)) playerPos2.Y -= playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (kstate.IsKeyDown(Keys.Down)) playerPos2.Y += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            
             //player area collision
             //player 1 bounds
             if (playerPos1.Y > graphics.PreferredBackBufferHeight - player1.Height / 2)
@@ -115,7 +139,7 @@ namespace mini_pong
                 playerPos2.Y = player2.Height / 2;
 
             //ball logic
-            ballYMultiplier = 2f;
+            ballYMultiplier = 0f;
 
             //ball y movement
             if (ballUp == true)
@@ -134,8 +158,8 @@ namespace mini_pong
             if (ballPos.Y < ball.Height / 2) ballUp = false;
 
             //ball to player 1 collision
-            if ((ballPos.X < playerPos1.X) && (ballPos.Y == playerPos1.Y))
-                ballRight = true;
+            if (playerRect1.Intersects(ballRect)) ballRight = true;
+            else if (playerRect2.Intersects(ballRect)) ballRight = false;
 
             //ball reset logic
             if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2)
