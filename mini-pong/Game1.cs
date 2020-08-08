@@ -19,11 +19,15 @@ namespace mini_pong
         Vector2 ballPos;
         Rectangle ballRect;
         float ballYMultiplier, ballSpeed;
-        bool ballUp, ballRight;
+        bool ballUp, ballRight, ballMove;
 
         SpriteFont scorefont;
         Vector2 scr1Pos, scr2Pos;
         int player1Scr, player2Scr;
+        bool player1Win, player2Win;
+
+        double gameTimer;
+        bool resetReady, timerStart;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -43,6 +47,13 @@ namespace mini_pong
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //reset game
+            gameTimer = 0f;
+            timerStart = false;
+            resetReady = false;
+            player1Win = false;
+            player2Win = false;
+            ballMove = false;
             //text pos
             scr1Pos = GameMaster.TextPos(3, 1, graphics);
             scr2Pos = GameMaster.TextPos(5, 1, graphics);
@@ -117,6 +128,8 @@ namespace mini_pong
                 Exit();
 
             // TODO: Add your update logic here
+            //game timer
+            gameTimer += gameTime.ElapsedGameTime.TotalSeconds;
             //sync rect pos with obj pos
             //p1
             playerRect1.Location = playerPos1.ToPoint();
@@ -147,17 +160,23 @@ namespace mini_pong
                 playerPos2.Y = 0;
 
             //ball logic
-            //ball y movement
-            if (ballUp == true)
-                ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            else
-                ballPos.Y += ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //ball movement
+            if(gameTimer > 2)
+            {
+                //ball y movement
+                if (ballUp == true)
+                    ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                else
+                    ballPos.Y += ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //ball x movement
-            if (ballRight == true)
-                ballPos.X += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            else
-                ballPos.X -= ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                //ball x movement
+                if (ballRight == true)
+                    ballPos.X += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                else
+                    ballPos.X -= ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            
 
             //ball y boundaries
             if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = true;
@@ -167,21 +186,15 @@ namespace mini_pong
             if (playerRect1.Intersects(ballRect)) ballRight = true;
             else if (playerRect2.Intersects(ballRect)) ballRight = false;
 
-            //ball reset logic
+            //reset game flag
             if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width)
             {
-                ballPos = GameMaster.ObjPos("Ball", graphics);
-                ballUp = GameMaster.RandBool();
-                ballRight = GameMaster.RandBool();
-                ballYMultiplier = (float)GameMaster.RandMult(2);
+                gameReset();
                 player1Scr++;
             }
             if (ballPos.X < 0)
             {
-                ballPos = GameMaster.ObjPos("Ball", graphics);
-                ballUp = GameMaster.RandBool();
-                ballRight = GameMaster.RandBool();
-                ballYMultiplier = (float)GameMaster.RandMult(2);
+                gameReset();
                 player2Scr++;
             }
 
@@ -194,19 +207,32 @@ namespace mini_pong
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            //new Vector2(player1.Width / 2, player1.Height / 2)
+            //begin drawing
             spriteBatch.Begin();
+            //drawing object
             spriteBatch.Draw(player1, playerPos1, playerRect1, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(player2, playerPos2, playerRect2, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(ball, ballPos, ballRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            //drawing text
             spriteBatch.DrawString(scorefont, player1Scr.ToString(), scr1Pos, Color.White);
             spriteBatch.DrawString(scorefont, player2Scr.ToString(), scr2Pos, Color.White);
+            //end drawing
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void gameReset()
+        {
+            ballPos = GameMaster.ObjPos("Ball", graphics);
+            ballUp = GameMaster.RandBool();
+            ballRight = GameMaster.RandBool();
+            ballYMultiplier = (float)GameMaster.RandMult(2);
+            resetReady = false;
+            gameTimer = 0f;
         }
     }
 }
