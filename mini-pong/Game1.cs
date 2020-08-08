@@ -85,6 +85,11 @@ namespace mini_pong
             player2 = Content.Load<Texture2D>("player");
             ball = Content.Load<Texture2D>("ball");
 
+            //fix center position of object
+            playerPos1 = playerPos1 - new Vector2(player1.Width/2, player1.Height/2);
+            playerPos2 = playerPos2 - new Vector2(player2.Width / 2, player2.Height / 2);
+            ballPos = ballPos - new Vector2(ball.Width / 2, ball.Height / 2);
+
             //assign rect size for collision
             playerRect1 = new Rectangle((int)playerPos1.X, (int)playerPos1.Y, player1.Width, player1.Height);
             //playerRect1.Offset(new Vector2(player1.Width / 2, player1.Height / 2));
