@@ -10,22 +10,19 @@ namespace mini_pong
     public class Game1 : Game
     {
 
-        Texture2D player1;
-        Vector2 playerPos1;
-        Rectangle playerRect1;
-
-        Texture2D player2;
-        Vector2 playerPos2;
-        Rectangle playerRect2;
+        Texture2D player1, player2;
+        Vector2 playerPos1, playerPos2;
+        Rectangle playerRect1, playerRect2;
+        float playerSpeed;
 
         Texture2D ball;
         Vector2 ballPos;
         Rectangle ballRect;
-        float ballYMultiplier;
+        float ballYMultiplier, ballSpeed;
         bool ballUp, ballRight;
 
-        float playerSpeed, ballSpeed;
-
+        SpriteFont scorefont;
+        Vector2 scr1Pos, scr2Pos;
         int player1Scr, player2Scr;
 
         GraphicsDeviceManager graphics;
@@ -46,6 +43,9 @@ namespace mini_pong
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //text pos
+            scr1Pos = GameMaster.TextPos(3, 1, graphics);
+            scr2Pos = GameMaster.TextPos(5, 1, graphics);
             //player pos
             playerPos1 = GameMaster.ObjPos("Player1", graphics);
             playerPos2 = GameMaster.ObjPos("Player2", graphics);
@@ -84,6 +84,7 @@ namespace mini_pong
             player1 = Content.Load<Texture2D>("player");
             player2 = Content.Load<Texture2D>("player");
             ball = Content.Load<Texture2D>("ball");
+            scorefont = Content.Load<SpriteFont>("testFont");
 
             //fix center position of object
             playerPos1 = playerPos1 - new Vector2(player1.Width/2, player1.Height/2);
@@ -92,11 +93,8 @@ namespace mini_pong
 
             //assign rect size for collision
             playerRect1 = new Rectangle((int)playerPos1.X, (int)playerPos1.Y, player1.Width, player1.Height);
-            //playerRect1.Offset(new Vector2(player1.Width / 2, player1.Height / 2));
             playerRect2 = new Rectangle((int)playerPos2.X, (int)playerPos2.Y, player2.Width, player2.Height);
-            //playerRect2.Offset(new Vector2(player2.Width / 2, player2.Height / 2));
             ballRect = new Rectangle((int)ballPos.X, (int)ballPos.Y, ball.Width, ball.Height);
-            //ballRect.Offset(new Vector2(ball.Width / 2, ball.Height / 2));
         }
 
         /// <summary>
@@ -204,6 +202,8 @@ namespace mini_pong
             spriteBatch.Draw(player1, playerPos1, playerRect1, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(player2, playerPos2, playerRect2, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(ball, ballPos, ballRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(scorefont, player1Scr.ToString(), scr1Pos, Color.White);
+            spriteBatch.DrawString(scorefont, player2Scr.ToString(), scr2Pos, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

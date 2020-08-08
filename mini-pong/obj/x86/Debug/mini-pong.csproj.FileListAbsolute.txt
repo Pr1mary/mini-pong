@@ -29,3 +29,4 @@ C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debu
 C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debug\mini-pong.application
 C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\obj\x86\Debug\mini-pong.exe.manifest
 C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\obj\x86\Debug\mini-pong.application
+C:\Users\ROG\OneDrive\.PERSONAL PROJECT\mini-pong\mini-pong\bin\Windows\x86\Debug\Content\testFont.xnb

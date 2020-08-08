@@ -37,3 +37,10 @@
 /processorParam:TextureFormat=Color
 /build:pong character.png;player.png
 
+#begin testFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:testFont.spritefont
+

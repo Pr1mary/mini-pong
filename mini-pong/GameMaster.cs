@@ -38,6 +38,14 @@ namespace mini_pong
             Vector2 pos = new Vector2(multiplier * (graphics.PreferredBackBufferWidth / 8), graphics.PreferredBackBufferHeight / 2);
             return pos;
         }
+        ///<summary>
+        /// fill the multiplier for desired text position
+        ///</summary>
+        public static Vector2 TextPos(int xPos, int yPos, GraphicsDeviceManager graphics)
+        {
+            Vector2 pos = new Vector2(xPos * (graphics.PreferredBackBufferWidth / 8), yPos * graphics.PreferredBackBufferHeight / 8);
+            return pos;
+        }
         /// <summary>
         /// return random boolean
         /// </summary>
