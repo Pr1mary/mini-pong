@@ -50,5 +50,10 @@ namespace mini_pong
             else
                 return false;
         }
+
+        public static double RandMult(int maxMult)
+        {
+            return rand.Next(1, maxMult);
+        }
     }
 }

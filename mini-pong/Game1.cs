@@ -22,11 +22,11 @@ namespace mini_pong
         Vector2 ballPos;
         Rectangle ballRect;
         float ballYMultiplier;
-        bool ballUp;
-        bool ballRight;
+        bool ballUp, ballRight;
 
-        float playerSpeed;
-        float ballSpeed;
+        float playerSpeed, ballSpeed;
+
+        int player1Scr, player2Scr;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -61,6 +61,11 @@ namespace mini_pong
             playerRect1 = new Rectangle();
             playerRect2 = new Rectangle();
             ballRect = new Rectangle();
+            //ball rand multiplier
+            ballYMultiplier = (float)GameMaster.RandMult(2);
+            //reset score
+            player1Scr = 0;
+            player2Scr = 0;
 
             base.Initialize();
         }
@@ -82,11 +87,11 @@ namespace mini_pong
 
             //assign rect size for collision
             playerRect1 = new Rectangle((int)playerPos1.X, (int)playerPos1.Y, player1.Width, player1.Height);
-            playerRect1.Offset(playerRect1.Width / 2, playerRect1.Height / 2);
+            //playerRect1.Offset(new Vector2(player1.Width / 2, player1.Height / 2));
             playerRect2 = new Rectangle((int)playerPos2.X, (int)playerPos2.Y, player2.Width, player2.Height);
-            playerRect2.Offset(playerRect2.Width / 2, playerRect2.Height / 2);
+            //playerRect2.Offset(new Vector2(player2.Width / 2, player2.Height / 2));
             ballRect = new Rectangle((int)ballPos.X, (int)ballPos.Y, ball.Width, ball.Height);
-            ballRect.Offset(ballRect.Width / 2, ballRect.Height / 2);
+            //ballRect.Offset(new Vector2(ball.Width / 2, ball.Height / 2));
         }
 
         /// <summary>
@@ -128,19 +133,17 @@ namespace mini_pong
             
             //player area collision
             //player 1 bounds
-            if (playerPos1.Y > graphics.PreferredBackBufferHeight - player1.Height / 2)
-                playerPos1.Y = graphics.PreferredBackBufferHeight - player1.Height / 2;
-            if (playerPos1.Y < player1.Height / 2)
-                playerPos1.Y = player1.Height / 2;
+            if (playerPos1.Y > graphics.PreferredBackBufferHeight - player1.Height)
+                playerPos1.Y = graphics.PreferredBackBufferHeight - player1.Height;
+            if (playerPos1.Y < 0)
+                playerPos1.Y = 0;
             //player 2 bounds
-            if (playerPos2.Y > graphics.PreferredBackBufferHeight - player2.Height / 2)
-                playerPos2.Y = graphics.PreferredBackBufferHeight - player2.Height / 2;
-            if (playerPos2.Y < player2.Height / 2)
-                playerPos2.Y = player2.Height / 2;
+            if (playerPos2.Y > graphics.PreferredBackBufferHeight - player2.Height)
+                playerPos2.Y = graphics.PreferredBackBufferHeight - player2.Height;
+            if (playerPos2.Y < 0)
+                playerPos2.Y = 0;
 
             //ball logic
-            ballYMultiplier = 0f;
-
             //ball y movement
             if (ballUp == true)
                 ballPos.Y -= ballYMultiplier * ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -162,17 +165,21 @@ namespace mini_pong
             else if (playerRect2.Intersects(ballRect)) ballRight = false;
 
             //ball reset logic
-            if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width / 2)
+            if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width)
             {
                 ballPos = GameMaster.ObjPos("Ball", graphics);
                 ballUp = GameMaster.RandBool();
                 ballRight = GameMaster.RandBool();
+                ballYMultiplier = (float)GameMaster.RandMult(2);
+                player1Scr++;
             }
-            if (ballPos.X < ball.Width / 2)
+            if (ballPos.X < 0)
             {
                 ballPos = GameMaster.ObjPos("Ball", graphics);
                 ballUp = GameMaster.RandBool();
                 ballRight = GameMaster.RandBool();
+                ballYMultiplier = (float)GameMaster.RandMult(2);
+                player2Scr++;
             }
 
             base.Update(gameTime);
@@ -187,10 +194,11 @@ namespace mini_pong
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            //new Vector2(player1.Width / 2, player1.Height / 2)
             spriteBatch.Begin();
-            spriteBatch.Draw(player1, playerPos1, null, Color.White, 0f, new Vector2(player1.Width / 2, player1.Height / 2), 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(player2, playerPos2, null, Color.White, 0f, new Vector2(player2.Width / 2, player2.Height / 2), 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(ball, ballPos, null, Color.White, 0f, new Vector2(ball.Width / 2, ball.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(player1, playerPos1, playerRect1, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(player2, playerPos2, playerRect2, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(ball, ballPos, ballRect, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
