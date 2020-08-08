@@ -2,18 +2,37 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace mini_pong
 {
     class GameMaster
     {
         private static Random rand = new Random();
-
-        public static Vector2 ObjCenter(GraphicsDeviceManager graphics)
+        /// <summary>
+        /// reset game
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="objTarget"></param>
+        /// <param name="ballPos"></param>
+        /// <param name="randBool1"></param>
+        /// <param name="randBool2"></param>
+        /// <param name="multiplier"></param>
+        /// <param name="gameTimer"></param>
+        public static void GameReset(GraphicsDeviceManager graphics, String objTarget, Vector2 ballPos, bool randBool1, bool randBool2, float multiplier, double gameTimer)
         {
-            Vector2 center = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
-            return center;
+            //unsafe
+            //{
+
+            //}
+            Vector2 _ballPos = ObjPos(objTarget, graphics);
+            ballPos = _ballPos;
+            randBool1 = RandBool();
+            randBool2 = RandBool();
+            multiplier = (float)RandMult(2);
+            gameTimer = 0f;
         }
+
         ///<summary>
         /// fill "Player1" for player one, "Player2" for player two, and "Ball" for ball object in objName
         ///</summary>
@@ -58,7 +77,11 @@ namespace mini_pong
             else
                 return false;
         }
-
+        /// <summary>
+        /// will random the multiplier needed for the game
+        /// </summary>
+        /// <param name="maxMult"></param>
+        /// <returns></returns>
         public static double RandMult(int maxMult)
         {
             return rand.Next(1, maxMult);

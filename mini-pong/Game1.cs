@@ -123,6 +123,7 @@ namespace mini_pong
                 Exit();
 
             // TODO: Add your update logic here
+            
             //game timer
             gameTimer += gameTime.ElapsedGameTime.TotalSeconds;
             //sync rect pos with obj pos
@@ -133,8 +134,18 @@ namespace mini_pong
             //ball
             ballRect.Location = ballPos.ToPoint();
 
-            //player control
+            //game control
             var kstate = Keyboard.GetState();
+
+            //restart the game
+            if (kstate.IsKeyDown(Keys.R))
+            {
+                player1Scr = 0;
+                player2Scr = 0;
+                //GameMaster.GameReset(graphics, "Ball", ballPos, ballUp, ballRight, ballYMultiplier, gameTimer);
+                GameReset();
+            }
+
             //player 1 control
             if (kstate.IsKeyDown(Keys.W)) playerPos1.Y -= playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (kstate.IsKeyDown(Keys.S)) playerPos1.Y += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -182,12 +193,14 @@ namespace mini_pong
             //reset game flag
             if (ballPos.X > graphics.PreferredBackBufferWidth - ball.Width)
             {
-                gameReset();
+                //GameMaster.GameReset(graphics, "Ball", ballPos, ballUp, ballRight, ballYMultiplier, gameTimer);
+                GameReset();
                 player1Scr++;
             }
             if (ballPos.X < 0)
             {
-                gameReset();
+                //GameMaster.GameReset(graphics, "Ball", ballPos, ballUp, ballRight, ballYMultiplier, gameTimer);
+                GameReset();
                 player2Scr++;
             }
 
@@ -218,7 +231,7 @@ namespace mini_pong
             base.Draw(gameTime);
         }
 
-        private void gameReset()
+        private void GameReset()
         {
             ballPos = GameMaster.ObjPos("Ball", graphics);
             ballUp = GameMaster.RandBool();
