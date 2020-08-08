@@ -19,15 +19,14 @@ namespace mini_pong
         Vector2 ballPos;
         Rectangle ballRect;
         float ballYMultiplier, ballSpeed;
-        bool ballUp, ballRight, ballMove;
+        bool ballUp, ballRight;
 
         SpriteFont scorefont;
         Vector2 scr1Pos, scr2Pos;
         int player1Scr, player2Scr;
-        bool player1Win, player2Win;
 
         double gameTimer;
-        bool resetReady, timerStart;
+        double startTime;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -49,11 +48,7 @@ namespace mini_pong
             // TODO: Add your initialization logic here
             //reset game
             gameTimer = 0f;
-            timerStart = false;
-            resetReady = false;
-            player1Win = false;
-            player2Win = false;
-            ballMove = false;
+            startTime = .5f;
             //text pos
             scr1Pos = GameMaster.TextPos(3, 1, graphics);
             scr2Pos = GameMaster.TextPos(5, 1, graphics);
@@ -161,7 +156,7 @@ namespace mini_pong
 
             //ball logic
             //ball movement
-            if(gameTimer > 2)
+            if(gameTimer > startTime)
             {
                 //ball y movement
                 if (ballUp == true)
@@ -175,8 +170,6 @@ namespace mini_pong
                 else
                     ballPos.X -= ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-
-            
 
             //ball y boundaries
             if (ballPos.Y > graphics.PreferredBackBufferHeight - ball.Height / 2) ballUp = true;
@@ -231,7 +224,6 @@ namespace mini_pong
             ballUp = GameMaster.RandBool();
             ballRight = GameMaster.RandBool();
             ballYMultiplier = (float)GameMaster.RandMult(2);
-            resetReady = false;
             gameTimer = 0f;
         }
     }
